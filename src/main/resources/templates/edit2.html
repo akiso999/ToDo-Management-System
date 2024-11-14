@@ -4,7 +4,7 @@
  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>UserPage(CreateTask)</title>
+<title>UserPage(Edit2Task)</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/todo.css}">
 </head>
 <body>
@@ -17,12 +17,12 @@
   <div class="border"></div>
   <a
    th:href="@{/main/create/{date}(date=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}"
-   class="text">登録</a>
+   class="text">編集</a>
  </header>
 
  <div class="form_back sd">
   <div class="form sd">
-   <div class="title sd">Regist</div>
+   <div class="title sd">Edit</div>
    <div class="form_box sd">
     <form method="post" th:action="@{/main/create}">
      <div class="form_row sd">
@@ -44,9 +44,14 @@
        <textarea name="text" cols="80" rows="10" class="item"></textarea>
       </div>
      </div>
+     <input type="checkbox" name="完了" value="done">
      <button class="form_button sd">
-      <p class="form_button_text sd text">投稿</p>
+      <p class="form_button_text sd text">更新</p>
      </button>
+      <button class="form_button sd">
+      <p class="form_button_text sd text">削除</p>
+     </button>
+     
     </form>
    </div>
   </div>
