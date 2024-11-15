@@ -1,12 +1,14 @@
 
 package com.dmm.task;
 
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+//import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -64,14 +66,20 @@ public class MainController {
 	      day = day.plusDays(1);  // 1日進める
 	    }
 
-	    //続き
-	    //翌週
-	    day.lengthOfMonth();
-	       
+	    // 最終週の翌月分
+	    w = day.getDayOfWeek();
+	    for(int i = 1; i < 7 - w.getValue(); i++) {  
+	      week.add(day);
+	      day = day.plusDays(1);
+	    }
+	    month.add(week); 
+
+	    // 取得したリストをテンプレートに渡す
+	    //Model.addAttribute("matrix", month);
+	    //Model.addAttribute("week", day);
 	    
-	    
-	    return "main";
-	   
+	  	return "main";
+
 	}
 	
 	@GetMapping("/login")
