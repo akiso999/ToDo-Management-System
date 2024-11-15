@@ -10,20 +10,18 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MainController {
 
-	@GetMapping("/create")
-	public String index() {
-		return "create";
-	}
 
 	@GetMapping("/edit")
 	public String test() {
 		return "edit";
 	}
 
+	// カレンダー表示用
 	@GetMapping("/main")
 	public String main() {
 
@@ -80,8 +78,21 @@ public class MainController {
 	    //Model.addAttribute("week", day);
 	    
 	  	return "main";
-
 	}
+	 // ★タスク登録画面の表示用
+	  @GetMapping("/main/create/{date}")
+	  	public String create() {
+	  		return "create";
+	  	}
+
+	 // ★タスク登録用
+	 @PostMapping("/main/create")
+	 public String createPost() {
+
+		 return "create";
+		 
+	 }
+	  	
 	
 	@GetMapping("/login")
 	public String login() {
