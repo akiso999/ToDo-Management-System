@@ -27,6 +27,7 @@ public class MainController {
 	@GetMapping("/main")
 	public String main() {
 
+		//
 	    // 週と日を格納する二次元のListを用意する
 	    List<List<LocalDate>> month = new ArrayList<>();
 
