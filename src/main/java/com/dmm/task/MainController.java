@@ -37,9 +37,8 @@ public class MainController {
 
 	// カレンダー表示用
 	@GetMapping("/main")
-	public String main() {
+	public String main(@AuthenticationPrincipal AccountUserDetails user, ...) {
 
-		//
 	    // 週と日を格納する二次元のListを用意する
 	    List<List<LocalDate>> month = new ArrayList<>();
 
@@ -88,7 +87,14 @@ public class MainController {
 
 	    // ★日付とタスクを紐付けるコレクション
 	    MultiValueMap<LocalDate, Tasks> tasks = new LinkedMultiValueMap<LocalDate, Tasks>();
-	        
+
+	    // 管理者だったら
+	    if(user.getUsername().equals("admin")) {
+	      ...
+	    } else {  // ユーザーだったら
+	      ...
+	    }
+	    
 	  	return "main";
 	}
 	// タスク登録画面の表示用
