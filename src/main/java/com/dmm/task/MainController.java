@@ -7,18 +7,29 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 //import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.dmm.task.entity.Tasks;
+import com.dmm.task.form.TaskForm;
+import com.dmm.task.repository.TasksRepository;
+import com.dmm.task.service.AccountUserDetails;
+
+
 @Controller
 public class MainController {
 
-
+	@Autowired
+	private TasksRepository repo;
+	
 	@GetMapping("/edit")
 	public String test() {
 		return "edit";
@@ -74,12 +85,10 @@ public class MainController {
 	      week.add(day);
 	      day = day.plusDays(1);
 	    }
-	    month.add(week); 
 
-	    // 取得したリストをテンプレートに渡す
-	    //Model.addAttribute("matrix", month);
-	    //Model.addAttribute("week", day);
-	    
+	    // ★日付とタスクを紐付けるコレクション
+	    MultiValueMap<LocalDate, Tasks> tasks = new LinkedMultiValueMap<LocalDate, Tasks>();
+	        
 	  	return "main";
 	}
 	// タスク登録画面の表示用
@@ -89,14 +98,20 @@ public class MainController {
 	    return "create";
 	}
 
-	 // ★タスク登録用
-	 @PostMapping("/main/create")
-	 public String createPost() {
+	// タスク登録用
+	@PostMapping("/main/create")
+	public String createPost(Model model, TaskForm form, @AuthenticationPrincipal AccountUserDetails user) {
+	    Tasks task = new Tasks();
+	    task.setName(user.getName());
+	    task.setTitle(form.getTitle());
+	    task.setText(form.getText());
+	    task.setDate(form.getDate().atTime(0, 0));
 
-		 return "create";
-		 
-	 }
-	  	
+	    repo.save(task);
+
+	    return "redirect:/main";
+	}
+
 	
 	@GetMapping("/login")
 	public String login() {
