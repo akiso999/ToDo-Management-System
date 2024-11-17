@@ -96,7 +96,7 @@ public class MainController {
 
 	    // 管理者だったら
 	    if(user.getUsername().equals("admin")) {
-	      ...
+	    	list = repo.findAllByDateBetween(start.atTime(0,0), end.atTime(0,0)); 
 	    } else {  // ユーザーだったら
 	    	list = repo.findByDateBetween(start.atTime(0, 0),end.atTime(0, 0), user.getName());
 	    }
