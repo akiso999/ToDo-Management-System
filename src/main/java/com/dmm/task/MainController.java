@@ -101,6 +101,11 @@ public class MainController {
 	    	list = repo.findByDateBetween(start.atTime(0, 0),end.atTime(0, 0), user.getName());
 	    }
 	    
+	    // 取得したタスクをコレクションに追加
+	    for(Tasks task : list) {
+	      tasks.add(task.getDate().toLocalDate(), task);
+	    }
+	    
 	  	return "main";
 	}
 	// タスク登録画面の表示用
