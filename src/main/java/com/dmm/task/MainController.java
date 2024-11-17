@@ -37,7 +37,8 @@ public class MainController {
 
 	// カレンダー表示用
 	@GetMapping("/main")
-	public String main(@AuthenticationPrincipal AccountUserDetails user, ...) {
+	public String main(@AuthenticationPrincipal AccountUserDetails user, ...) 
+	{
 
 	    // 週と日を格納する二次元のListを用意する
 	    List<List<LocalDate>> month = new ArrayList<>();
@@ -55,6 +56,7 @@ public class MainController {
 	    // 前月分の LocalDateを求める
 	    DayOfWeek w = day.getDayOfWeek();  // 当該日の曜日を取得
 	    day = day.minusDays(w.getValue());  // 1日からマイナス
+	    start = day;  // カレンダーの初めの日
 
 	    // 1週目（1日ずつ増やして 週のリストに格納していく）
 	    for(int i = 1; i <= 7; i++) {
@@ -85,14 +87,18 @@ public class MainController {
 	      day = day.plusDays(1);
 	    }
 
-	    // ★日付とタスクを紐付けるコレクション
+	    end = day;  // カレンダーの終わりの日
+	    
+	    // 日付とタスクを紐付けるコレクション
 	    MultiValueMap<LocalDate, Tasks> tasks = new LinkedMultiValueMap<LocalDate, Tasks>();
+	    
+	    List<Tasks> list;  // ★
 
 	    // 管理者だったら
 	    if(user.getUsername().equals("admin")) {
 	      ...
 	    } else {  // ユーザーだったら
-	      ...
+	    	list = repo.findByDateBetween(start.atTime(0, 0),end.atTime(0, 0), user.getName());
 	    }
 	    
 	  	return "main";
