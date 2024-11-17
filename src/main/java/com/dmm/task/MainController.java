@@ -37,8 +37,7 @@ public class MainController {
 
 	// カレンダー表示用
 	@GetMapping("/main")
-	public String main(@AuthenticationPrincipal AccountUserDetails user, ...) 
-	{
+	public String main(Model model, @AuthenticationPrincipal AccountUserDetails user, ...) { 
 
 	    // 週と日を格納する二次元のListを用意する
 	    List<List<LocalDate>> month = new ArrayList<>();
@@ -86,13 +85,13 @@ public class MainController {
 	      week.add(day);
 	      day = day.plusDays(1);
 	    }
-
 	    end = day;  // カレンダーの終わりの日
 	    
 	    // 日付とタスクを紐付けるコレクション
 	    MultiValueMap<LocalDate, Tasks> tasks = new LinkedMultiValueMap<LocalDate, Tasks>();
 	    
-	    List<Tasks> list;  // ★
+	    // リポジトリからタスクを取得
+	    List<Tasks> list;
 
 	    // 管理者だったら
 	    if(user.getUsername().equals("admin")) {
@@ -106,8 +105,18 @@ public class MainController {
 	      tasks.add(task.getDate().toLocalDate(), task);
 	    }
 	    
-	  	return "main";
-	}
+	    // ★カレンダーのデータをHTMLに連携
+	    model.addAttribute("matrix", month);
+
+	    // ★コレクションのデータをHTMLに連携
+	    model.addAttribute("tasks", tasks);
+
+	    // ★HTMLを表示
+	    return "main";
+	    
+
+}
+
 	// タスク登録画面の表示用
 	@GetMapping("/main/create/{date}")
 	public String create(Model model, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
