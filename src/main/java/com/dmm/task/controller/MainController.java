@@ -148,8 +148,19 @@ public class MainController {
 	  
 	  // ★タスク編集用
 	  @PostMapping("/main/edit/{id}")
-	  public String editPost(...) {
-	    ...
+	  public String editPost(Model model, TaskForm form, @PathVariable Integer id, @AuthenticationPrincipal AccountUserDetails user) {
+	      Tasks task = new Tasks();
+	      task.setId(id);
+
+	      task.setName(user.getName());
+	      task.setTitle(form.getTitle());
+	      task.setText(form.getText());
+	      task.setDate(form.getDate().atTime(0, 0));
+	      task.setDone(form.isDone());
+
+	      repo.save(task);
+
+	      return "redirect:/main";
 	  }
 
 	@GetMapping("/login")
