@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.dmm.task.entity.Users;
+import com.dmm.task.data.entity.Users;
 
 public class AccountUserDetails implements UserDetails { // UserDetailsを実装する
 

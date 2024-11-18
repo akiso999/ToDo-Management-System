@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		super.configure(auth);
 	}
 
-    @Override
+	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// 画像、JavaScript、cssは認可の対象外とする
 		web.debug(false).ignoring().antMatchers("/images/**", "/js/**", "/css/**");
@@ -52,9 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/main") // 認証成功時に遷移するデフォルトのパス
 				.failureUrl("/loginForm?error=true"); // 認証失敗時に遷移するパス
 
-
-
-		
 		// ログアウト設定
 		http.logout().logoutSuccessUrl("/login") // ログアウト成功時に遷移するパス
 				.permitAll(); // 全ユーザに対して許可

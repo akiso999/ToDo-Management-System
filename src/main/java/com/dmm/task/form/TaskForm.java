@@ -8,9 +8,9 @@ import lombok.Data;
 
 @Data
 public class TaskForm {
-  private String title;
-  private String text;
-  @DateTimeFormat(pattern = "yyyy-MM-dd")
-  private LocalDate date;
-  private boolean done;
+	private String title;
+	private String text;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate date;
+	private boolean done;
 }
