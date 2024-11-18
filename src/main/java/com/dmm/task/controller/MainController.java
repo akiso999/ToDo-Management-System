@@ -163,6 +163,12 @@ public class MainController {
 	      return "redirect:/main";
 	  }
 
+	  // ★タスク削除用
+	  @PostMapping("/main/delete/{id}")
+	  public String deletePost(...) {
+	    ...
+	  }
+	  	  
 	@GetMapping("/login")
 	public String login() {
 		return "login";
