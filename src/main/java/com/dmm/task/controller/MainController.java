@@ -1,5 +1,5 @@
 
-package com.dmm.task;
+package com.dmm.task.controller;
 
 
 import java.time.DayOfWeek;
@@ -138,6 +138,19 @@ public class MainController {
 	    return "redirect:/main";
 	}
 
+	  // ★タスク編集画面の表示用
+	  @GetMapping("/main/edit/{id}")
+	  public String edit(...) {
+	    ...
+	  }
+
+	  // ★タスク編集用
+	  @PostMapping("/main/edit/{id}")
+	  public String editPost(...) {
+	    ...
+	  }
+
+	
 	
 	@GetMapping("/login")
 	public String login() {
