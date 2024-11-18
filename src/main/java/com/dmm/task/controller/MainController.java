@@ -140,18 +140,18 @@ public class MainController {
 
 	  // ★タスク編集画面の表示用
 	  @GetMapping("/main/edit/{id}")
-	  public String edit(...) {
-	    ...
+	  public String edit(Model model, @PathVariable Integer id) {
+	      Tasks task = repo.getById(id);
+	      model.addAttribute("task", task);
+	      return "edit";
 	  }
-
+	  
 	  // ★タスク編集用
 	  @PostMapping("/main/edit/{id}")
 	  public String editPost(...) {
 	    ...
 	  }
 
-	
-	
 	@GetMapping("/login")
 	public String login() {
 		return "login";
