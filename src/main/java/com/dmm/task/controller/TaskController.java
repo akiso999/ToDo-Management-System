@@ -50,10 +50,15 @@ public class TaskController {
 		// 日にちを格納する変数を用意する
 		LocalDate day, start, end;
 
-		
-		// その月の1日を取得する
-		day = LocalDate.now();  // 現在日時を取得
-		day = LocalDate.of(day.getYear(), day.getMonthValue(), 1);  // 現在日時からその月の1日を取得
+
+		// ★今月 or 前月 or 翌月を判定
+		if(date == null) {
+			// その月の1日を取得する
+			day = LocalDate.now();  // 現在日時を取得
+			day = LocalDate.of(day.getYear(), day.getMonthValue(), 1);  // 現在日時からその月の1日を取得
+		}else {
+			day = date;  // 引数で受け取った日付をそのまま使う
+		}
 
 		// カレンダーの ToDo直下に「yyyy年mm月」と表示させる
 		model.addAttribute("month", day.format(DateTimeFormatter.ofPattern("yyyy年MM月")));
@@ -91,15 +96,13 @@ public class TaskController {
 			week.add(day);
 			day = day.plusDays(1);
 		}
-
 		end = day;  // カレンダーの終わりの日
-		
+
 		// 日付とタスクを紐付けるコレクション
 		MultiValueMap<LocalDate, Tasks> tasks = new LinkedMultiValueMap<LocalDate, Tasks>();
 
 		// リポジトリからタスクを取得
 		List<Tasks> list;
-
 		// 管理者だったら
 		if(user.getUsername().equals("admin")) {
 			list = repo.findAllByDateBetween(start.atTime(0,0), end.atTime(0,0)); 
@@ -179,6 +182,6 @@ public class TaskController {
 
 		 return "redirect:/main";
 	  }
-	  
-	  	  
+
+
 }
