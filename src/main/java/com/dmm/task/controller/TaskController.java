@@ -4,11 +4,13 @@ package com.dmm.task.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
@@ -37,7 +39,7 @@ public class TaskController {
 
 	// カレンダー表示用
 	@GetMapping("/main")
-	public String main(Model model, @AuthenticationPrincipal AccountUserDetails user, ...) { 
+	public String main(Model model, @AuthenticationPrincipal AccountUserDetails user) { 
 
 		// 週と日を格納する二次元のListを用意する
 		List<List<LocalDate>> month = new ArrayList<>();
@@ -46,12 +48,16 @@ public class TaskController {
 		List<LocalDate> week = new ArrayList<>();
 
 		// 日にちを格納する変数を用意する
-		LocalDate day;
+		LocalDate day, start, end;
 
+		
 		// その月の1日を取得する
 		day = LocalDate.now();  // 現在日時を取得
 		day = LocalDate.of(day.getYear(), day.getMonthValue(), 1);  // 現在日時からその月の1日を取得
 
+		// カレンダーの ToDo直下に「yyyy年mm月」と表示させる
+		model.addAttribute("month", day.format(DateTimeFormatter.ofPattern("yyyy年MM月")));
+	    
 		// 前月分の LocalDateを求める
 		DayOfWeek w = day.getDayOfWeek();  // 当該日の曜日を取得
 		day = day.minusDays(w.getValue());  // 1日からマイナス
@@ -101,20 +107,19 @@ public class TaskController {
 			list = repo.findByDateBetween(start.atTime(0, 0),end.atTime(0, 0), user.getName());
 		}
 
-	    // 取得したタスクをコレクションに追加
-	    for(Tasks task : list) {
-	    	tasks.add(task.getDate().toLocalDate(), task);
-	    }
-	    
-	    // ★カレンダーのデータをHTMLに連携
-	    model.addAttribute("matrix", month);
+		// 取得したタスクをコレクションに追加
+		for(Tasks task : list) {
+			tasks.add(task.getDate().toLocalDate(), task);
+		}
 
-	    // ★コレクションのデータをHTMLに連携
-	    model.addAttribute("tasks", tasks);
+		// ★カレンダーのデータをHTMLに連携
+		model.addAttribute("matrix", month);
 
-	    // ★HTMLを表示
-	    return "main";
-	    
+		// ★コレクションのデータをHTMLに連携
+		model.addAttribute("tasks", tasks);
+
+		// ★HTMLを表示
+		return "main";
 
 }
 
@@ -147,27 +152,33 @@ public class TaskController {
 		return "edit";
 	}
 	  
-	  // ★タスク編集用
-	  @PostMapping("/main/edit/{id}")
-	  public String editPost(Model model, TaskForm form, @PathVariable Integer id, @AuthenticationPrincipal AccountUserDetails user) {
-		  Tasks task = new Tasks();
-	      task.setId(id);
+	// ★タスク編集用
+	@PostMapping("/main/edit/{id}")
+	public String editPost(Model model, TaskForm form, @PathVariable Integer id, @AuthenticationPrincipal AccountUserDetails user) {
+		Tasks task = new Tasks();
 
-	      task.setName(user.getName());
-	      task.setTitle(form.getTitle());
-	      task.setText(form.getText());
-	      task.setDate(form.getDate().atTime(0, 0));
-	      task.setDone(form.isDone());
+		task.setId(id);
+		task.setName(user.getName());
+		task.setTitle(form.getTitle());
+		task.setText(form.getText());
+		task.setDate(form.getDate().atTime(0, 0));
+		task.setDone(form.isDone());
 
-	      repo.save(task);
+		repo.save(task);
 
-	      return "redirect:/main";
+		return "redirect:/main";
 	  }
 
 	  // ★タスク削除用
-	  @PostMapping("/main/delete/{id}")	
-	  public String deletePost(...) {
-	    ...
+	  @PostMapping("/main/delete/{id}")
+	  public String deletePost(Model model, TaskForm form, @PathVariable Integer id) {
+		 Tasks task = new Tasks();
+		 task.setId(id);
+
+		 repo.delete(task);
+
+		 return "redirect:/main";
 	  }
+	  
 	  	  
 }

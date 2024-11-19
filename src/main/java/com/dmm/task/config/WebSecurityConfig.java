@@ -40,12 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// 認可の設定
 
-		http.authorizeRequests().antMatchers("/login").permitAll() // loginFormは、全ユーザからのアクセスを許可
+		http.authorizeRequests().antMatchers("/loginForm").permitAll() // loginFormは、全ユーザからのアクセスを許可
 				.anyRequest().authenticated(); // loginForm以外は、認証を求める
 
 		// ログイン設定
 		http.formLogin() // フォーム認証の有効化
-				.loginPage("/login") // ログインフォームを表示するパス
+				.loginPage("/loginForm") // ログインフォームを表示するパス
 				.loginProcessingUrl("/authenticate") // フォーム認証処理のパス
 				.usernameParameter("userName") // ユーザ名のリクエストパラメータ名
 				.passwordParameter("password") // パスワードのリクエストパラメータ名
@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.failureUrl("/loginForm?error=true"); // 認証失敗時に遷移するパス
 
 		// ログアウト設定
-		http.logout().logoutSuccessUrl("/login") // ログアウト成功時に遷移するパス
+		http.logout().logoutSuccessUrl("/loginForm") // ログアウト成功時に遷移するパス
 				.permitAll(); // 全ユーザに対して許可
 	}
 
