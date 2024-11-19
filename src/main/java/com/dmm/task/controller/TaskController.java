@@ -32,11 +32,6 @@ public class TaskController {
 	@Autowired
 	private TasksRepository repo;
 
-	@GetMapping("/edit")
-	public String test() {
-		return "edit";
-	}
-
 	// カレンダー表示用
 	@GetMapping("/main")
 	public String main(Model model, @AuthenticationPrincipal AccountUserDetails user, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) { 
@@ -51,7 +46,7 @@ public class TaskController {
 		LocalDate day, start, end;
 
 
-		// ★今月 or 前月 or 翌月を判定
+		// 今月 or 前月 or 翌月を判定
 		if(date == null) {
 			// その月の1日を取得する
 			day = LocalDate.now();  // 現在日時を取得
@@ -62,7 +57,10 @@ public class TaskController {
 
 		// カレンダーの ToDo直下に「yyyy年mm月」と表示させる
 		model.addAttribute("month", day.format(DateTimeFormatter.ofPattern("yyyy年MM月")));
-	    
+
+		// 前月のリンク
+		model.addAttribute("prev", day.minusMonths(1));
+		
 		// 前月分の LocalDateを求める
 		DayOfWeek w = day.getDayOfWeek();  // 当該日の曜日を取得
 		day = day.minusDays(w.getValue());  // 1日からマイナス
