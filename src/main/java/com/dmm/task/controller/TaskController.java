@@ -39,7 +39,7 @@ public class TaskController {
 
 	// カレンダー表示用
 	@GetMapping("/main")
-	public String main(Model model, @AuthenticationPrincipal AccountUserDetails user) { 
+	public String main(Model model, @AuthenticationPrincipal AccountUserDetails user, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) { 
 
 		// 週と日を格納する二次元のListを用意する
 		List<List<LocalDate>> month = new ArrayList<>();
@@ -112,13 +112,13 @@ public class TaskController {
 			tasks.add(task.getDate().toLocalDate(), task);
 		}
 
-		// ★カレンダーのデータをHTMLに連携
+		// カレンダーのデータをHTMLに連携
 		model.addAttribute("matrix", month);
 
-		// ★コレクションのデータをHTMLに連携
+		// コレクションのデータをHTMLに連携
 		model.addAttribute("tasks", tasks);
 
-		// ★HTMLを表示
+		// HTMLを表示
 		return "main";
 
 }
