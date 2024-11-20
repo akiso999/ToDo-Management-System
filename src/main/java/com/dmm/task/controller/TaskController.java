@@ -45,7 +45,6 @@ public class TaskController {
 		// 日にちを格納する変数を用意する
 		LocalDate day, start, end;
 
-
 		// 今月 or 前月 or 翌月を判定
 		if(date == null) {
 			// その月の1日を取得する
@@ -60,7 +59,10 @@ public class TaskController {
 
 		// 前月のリンク
 		model.addAttribute("prev", day.minusMonths(1));
-		
+
+		// ★翌月のリンク
+	    model.addAttribute("next", day.plusMonths(1));
+
 		// 前月分の LocalDateを求める
 		DayOfWeek w = day.getDayOfWeek();  // 当該日の曜日を取得
 		day = day.minusDays(w.getValue());  // 1日からマイナス
@@ -180,6 +182,5 @@ public class TaskController {
 
 		 return "redirect:/main";
 	  }
-
 
 }
